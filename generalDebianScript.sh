@@ -102,3 +102,7 @@ echo "nospoof on" | sudo tee -a /etc/host.conf
 echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 echo "net.ipv4.ip_forward = 0" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
+
+
+echo "getting rid of alias stuff"
+unalias -a
