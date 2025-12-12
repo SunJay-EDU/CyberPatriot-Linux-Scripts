@@ -1,0 +1,58 @@
+Honestly, theres no way or a reliable way to make a script for finding files as it could vary A LOT, but here are some general tips.
+
+Heres how to generaly remove bad applications:
+
+sudo apt remove <app>
+sudo apt purge <app>
+sudo apt-get autoremove -y
+
+
+
+
+
+
+
+
+
+finding files that are commonly banned:
+
+
+for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
+do
+  sudo find /home -name *.$suffix
+done
+
+
+(save and run as a .sh file pls...)
+
+
+
+
+
+
+
+
+If you want to find malware or such backdoors, clamAV is useless because the school wifi somehow messes up (go dragons!...)
+
+you finna have to find it manually with this:
+
+
+find / -perm -4000 -type f 2>/dev/null > /root/suid_files.txt
+
+
+(run as root...)
+
+
+you can find hidden files with this (hidden directory finder below)
+
+find / -type f -name ".*" 2>/dev/null > /root/hidden_files.txt
+
+find / -type d -name ".*" 2>/dev/null > /root/hidden_dirs.txt
+
+find / -perm -4000 -type f 2>/dev/null > /root/suid_files.txt
+
+find / -uid +999 2>/dev/null
+
+
+
+
