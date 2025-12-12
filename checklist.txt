@@ -1,0 +1,86 @@
+Cyberpatriot Linux Checklist:
+
+NOTE: These are general tips and may vary between Ubuntu and Linux Mint
+
+Introduction:
+	Unique ID (Enter it)
+
+Forensic Questions:
+	Forensics Questions (Usually only two of them)	
+	NOTE: Do NOT delete anything before doing the FQs, some of the questions could rely on said deleted items. Also once you are 100% DONE with the FQs, then you can delete them as they give free points.
+
+
+ReadME:
+	The ReadME is very important as it contains steps that you must do for points.
+	DO NOT disable or alter things under critical service(s)
+
+
+System Hardening:
+	This step will take the longest as it contains multiple steps…
+
+	Users & Groups:
+
+		In both Ubuntu and Mint, there are Users & Group Management programs (Always system installed ones). Use that for this part..
+		This step is quite tedious but easy!...
+
+		Use the checklist you are provided as it contains the list of Admins and authorized users
+		If a user is marked with Admin -> select Adminstator User/Mode
+		If a user is marked with authorized user -> select Desktop/Standard  User/Mode
+		If a user is not found in both sections -> Delete their account & Files
+
+		In this step, if you find that an admin has a weak password (all lowercase letters no numbers or special characters). Then change out their password to something better such as this: $udoT1gerMan6767
+
+	In the ReadME, you may have been instructed to add a user. If so, do it now.
+	In the ReadME, you may have been asked to make sure a user changes their password next time they log in. Down below will tell you how to do that! (This command works for BOTH Linux Distros)
+
+COMMAND: sudo passwd -e [name of user]
+ALT. COMMAND: sudo chage -d 0 [name of user]
+
+
+Updates:
+
+	After you have finished the Users/Groups step, run updates through these commands!
+
+COMMAND 1: sudo apt update 	(select y when prompted to)
+COMMAND 2: sudo apt upgrade	(select y when prompted to)
+
+	USUALLY this is supposed to be a one-time thing and should earn you points
+	Run those commands every now and then to ensure you are fully updated since SOMETIMES it acts up (Just ask one of us…)
+	Usually, you will know it worked once the scoreboard reports back with:
+
+	“ [Random Application] Updated + 5pts “
+	“ [Security Patches] Installed + 10 pts “
+
+	If the ReadME specified to update everything else except for [random] package, heres the command to do that
+
+	Sudo apt-mark hold [package name]
+	Then run apt update and upgrade
+
+	
+
+	After running those updates, we must now enable auto updates too as it earns your points.
+
+Ubuntu: 
+	Desktop Menu -> Software & Updates -> Updates tab -> Select the option to enable auto updates and click the 2 buttons that specify security stuff
+
+Mint:
+	Update manager -> options (select the “refresh the list of updates…” option) -> automation (select all check mark stuff)
+	
+
+Next we can go to removing “banned” applications and files
+These apps are (usually) hacking tools such as Wireshark, ophcrack, or some pirating software. Games are also not allowed to be installed.
+Also as a general rule of thumb any MP3/MP4 files are usually prohibited unless specified
+
+Deleting banned files is straightforward (Use the File GUI, navigate through common directories and delete them)
+OR, you can use copy and paste this and make it into a script:
+
+for suffix in mp3 txt wav wma aac mp4 mov avi gif jpg png bmp img exe msi bat sh
+do
+  sudo find /home -name *.$suffix
+done
+
+(https://github.com/curtisf/cyberpatriot-debian8-hardening)
+
+
+
+
