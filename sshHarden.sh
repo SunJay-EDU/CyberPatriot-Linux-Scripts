@@ -2,6 +2,9 @@
 
 
 sudo apt-get install -y --only-upgrade openssh-server
-sudo apt-get install fail2ban -y
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/^#\?PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+sed -i 's/^#\?Protocol.*/Protocol 2/' /etc/ssh/sshd_config
+systemctl reload sshd
 
-#work on this more...
+sudo ufw allow ssh
