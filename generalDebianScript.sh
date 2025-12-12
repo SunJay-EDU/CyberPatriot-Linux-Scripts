@@ -17,7 +17,6 @@ echo "setting up firewall - UFW"
 sudo apt-get install ufw -y
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
-sudo ufw enable
 
 echo "blocking insecure ports via UFW"
 
@@ -42,16 +41,17 @@ sudo ufw deny smtp
 sudo ufw deny printer
 sudo ufw allow ssh
 
+echo "turning on ufw"
+
+sudo ufw enable
+
 echo "securing critical files"
 
-chown root:root /etc/securetty
-chmod 0600 /etc/securetty
+[ -f /etc/securetty ] && chmod 600 /etc/securetty && chown root:root /etc/securetty
 chmod 644 /etc/crontab
-chmod 640 /etc/ftpusers
-chmod 440 /etc/inetd.conf
-chmod 440 /etc/xinted.conf
-chmod 400 /etc/inetd.d
-chmod 644 /etc/hosts.allow
+chown root:root /etc/crontab
+[ -f /etc/ftpusers ] && chmod 640 /etc/ftpusers
+[ -f /etc/hosts.allow ] && chmod 644 /etc/hosts.allow
 chmod 440 /etc/sudoers
 chmod 440 /etc/sudoers.d
 chmod 600 /etc/shadow
@@ -62,31 +62,17 @@ chmod 644 /etc/group
 chown root:root /etc/group
 chmod 600 /etc/gshadow
 chown root:root /etc/gshadow
-chmod 700 /boot
-chown root:root /etc/anacrontab
-chmod 600 /etc/anacrontab
-chown root:root /etc/crontab
-chmod 600 /etc/crontab
-chown root:root /etc/cron.hourly
-chmod 600 /etc/cron.hourly
-chown root:root /etc/cron.daily
-chmod 600 /etc/cron.daily
-chown root:root /etc/cron.weekly
-chmod 600 /etc/cron.weekly
-chown root:root /etc/cron.monthly
-chmod 600 /etc/cron.monthly
-chown root:root /etc/cron.d
-chmod 600 /etc/cron.d
+
+# Fix cron directories (must be 755)
+for d in /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d; do
+    [ -d "$d" ] && chmod 755 "$d" && chown root:root "$d"
+done
 
 
-echo "locking root account..."
-
-sudo passwd -l root
 
 echo "setting up auditd..."
 
 sudo apt-get install auditd -y
-sudo auditctl -e 1
 sudo systemctl enable auditd
 sudo systemctl start auditd
 
@@ -106,3 +92,16 @@ sudo sysctl -p
 
 echo "getting rid of alias stuff"
 unalias -a
+
+echo "disabiling guest account"
+
+if [ -f /etc/lightdm/lightdm.conf ]; then
+    sed -i 's/^#\?allow-guest=.*/allow-guest=false/' /etc/lightdm/lightdm.conf
+fi
+
+
+echo "SUID Files. will be in root as a txt"
+sudo sh -c "find / -perm -4000 -type f 2>/dev/null > /root/suid_files.txt"
+
+echo "general script done. if you see this msg, then the script has not broke the system"
+
